@@ -94,7 +94,7 @@ python3 migrate.py
 
 This will:
 - Export the current Neo4j graph to `data/neo_data/`
-- create a FalkorDB by Creating nodes, relationships, properties, and constraints
+- Create a FalkorDB by Creating nodes, relationships, properties, and constraints
 - Validate that the graphs are equivalent
 ## 💡 Please Notice 
 
