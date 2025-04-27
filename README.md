@@ -61,9 +61,8 @@ Below are visualizations of the graph before and after the migration:
 
 ### ⚠️ Assumptions
 - Both **Neo4j** and **FalkorDB** are running locally using **Docker**.
-- **Neo4j** is already populated with data (or will be populated via the sample data provided).
+- **Neo4j** is already populated with data.
 - Exported data will be saved in the `data/neo_data/` folder.
-- Both databases are accessible via Cypher queries.
 - This project provides a set of sample data and scripts to create a sample Neo4j graph if needed.
 
 ---
@@ -168,16 +167,26 @@ docker run \
 
 </details>
 
-You can generate a sample graph first using the provided utility script.
+You can either:
+1. Atutomatically run the entire migration by running
 
 ```bash
-python utils/example_run_all.py
-```
-
+python3 utils/example_run_all.py
+``` 
 This will:
 - Reset the environment (clear Neo4j, FalkorDB, and old CSVs)
 - Create a sample Neo4j graph based on sample CSV data
 - Perform the full export → import → comparison process
+
+OR
+
+2. Running compleley manually
+```bash
+python3 utils/reset_graphs_and_exported_data.py
+python3 utils/create_neo_graph.py
+python3 migrate.py
+``` 
+
 
 </details>
 
