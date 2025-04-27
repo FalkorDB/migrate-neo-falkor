@@ -1,0 +1,10 @@
+start_username,end_username,since
+dave,alice,2010-04-23
+dave,bob,2022-01-10
+frank,dave,2020-07-14
+dave,eve,2011-09-05
+carol,frank,2022-06-11
+eve,dave,2018-03-19
+frank,eve,2011-12-25
+bob,alice,2021-11-03
+alice,carol,2021-01-29

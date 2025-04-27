@@ -1,0 +1,17 @@
+# Ignore Python virtual environments
+migration-falkor/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore data archives
+data/sample_data.zip
+
+# Ignore VSCode or editor files (optional)
+.vscode/
+.idea/
+
+# Ignore system files (optional)
+.DS_Store
+Thumbs.db
