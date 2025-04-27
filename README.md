@@ -99,7 +99,7 @@ This will:
 ## 💡 Please Notice 
 
 These scripts are tailored to work with the sample data provided in `data/sample_data/` and serve primarily as a **reference implementation**.  
-If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names. See [Editing the Scripts](#-editing-the-scripts-to-your-use-case) 
+If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names. See [Editing the Scripts](#💡-editing-the-scripts-to-your-use-case) 
 
 ---
 
