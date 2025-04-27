@@ -62,8 +62,6 @@ Below are visualizations of the graph before and after the migration:
 ### ⚠️ Assumptions
 - Both **Neo4j** and **FalkorDB** are running locally using **Docker**.
 - **Neo4j** is already populated with data.
-- Exported data will be saved in the `data/neo_data/` folder.
-- This project provides a set of sample data and scripts to create a sample Neo4j graph if needed.
 
 ---
 
