@@ -99,7 +99,7 @@ This will:
 ## 💡 Please Notice 
 
 These scripts are tailored to work with the sample data provided in `data/sample_data/` and serve primarily as a **reference implementation**.  
-If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names. See [Editing the Scripts](#💡-editing-the-scripts-to-your-use-case) 
+If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names. See [Editing the Scripts](#-editing-the-scripts-to-your-use-case) 
 
 ---
 
@@ -117,8 +117,10 @@ you should extend the transformation logic accordingly before loading into Falko
 
 ---
 
+## 🧪 Optional — If you <strong>don't have</strong> a Neo4j graph yet:
+
 <details>
-<summary>🧪 Optional — If you <strong>don't have</strong> a Neo4j graph yet:</summary>
+<summary>Expand to create local neo graph:</summary>
 
 ### 🐳 Docker Setup For running Neo4j Locally
 
@@ -191,7 +193,7 @@ python3 migrate.py
 ## 💡 Editing the Scripts to Your Use Case
 
 <details>
-<summary>Expand to see details</summary>
+<summary>Expand to edit suggestions</summary>
 
 These scripts are tailored to work with the sample data provided in `data/sample_data/` and serve primarily as a **reference implementation**.  
 If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names.
