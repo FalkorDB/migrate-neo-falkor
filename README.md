@@ -90,7 +90,7 @@ pip install -r requirements.txt
 python3 migrate.py
 ```
 
-2. Follow the prompts to approve each stage of the migration.
+3. Follow the prompts to approve each stage of the migration.
 
 This will:
 - Export the current Neo4j graph to `data/neo_data/`
