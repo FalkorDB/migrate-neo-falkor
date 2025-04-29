@@ -1,4 +1,6 @@
 import sys
+import os
+
 from falkordb import FalkorDB
 from utils.reset_graphs_and_exported_data import main as reset_environment
 from migrate.export_from_neo import main as export_data_from_neo
@@ -6,12 +8,12 @@ from migrate.create_falkor_graph import main as create_falkor_graph
 from migrate.compare_graphs import main as compare_graphs
 from migrate.clean import main as clean_falkor
 
+EXPECTED_FILES = ["users.csv", "posts.csv", "friends_with.csv", "created.csv", "constraints.csv"]
+
 
 # Sanity check on the exported csv files in data/neo_data
 def check_export_output():
-    import os
-    expected_files = ["users.csv", "posts.csv", "friends_with.csv", "created.csv", "constraints.csv"]
-    missing = [f for f in expected_files if not os.path.exists(f"data/neo_data/{f}")]
+    missing = [f for f in EXPECTED_FILES if not os.path.exists(f"data/neo_data/{f}")]
     if missing:
         raise ValueError(f"Export check failed: missing files {missing}")
     print("Exported files present.")

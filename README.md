@@ -216,5 +216,3 @@ Specifically:
 
 
 </details>
-
-<details>
