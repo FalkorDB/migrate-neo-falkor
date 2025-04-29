@@ -1,9 +1,6 @@
 import sys
 from falkordb import FalkorDB
-
 from utils.reset_graphs_and_exported_data import main as reset_environment
-
-
 from migrate.export_from_neo import main as export_data_from_neo
 from migrate.create_falkor_graph import main as create_falkor_graph
 from migrate.compare_graphs import main as compare_graphs

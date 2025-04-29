@@ -1,16 +1,19 @@
+import os
+import pandas as pd
+from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from falkordb import FalkorDB
-import pandas as pd
 
-# Neo4j settings
-NEO4J_URI = "bolt://localhost:7687"
-NEO4J_USER = "neo4j"
-NEO4J_PASS = "test1234"
+load_dotenv()
+FALKOR_HOST = os.getenv("FALKOR_HOST", "localhost")
+FALKOR_PORT = os.getenv("FALKOR_PORT", "6379")
+FALKOR_GRAPH_NAME = os.getenv("FALKOR_GRAPH_NAME", "SocialGraph")
 
-# FalkorDB settings
-FALKOR_HOST = "localhost"
-FALKOR_PORT = 6379
-FALKOR_GRAPH = "SocialGraph"
+NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
+NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
+NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
+
+
 
 # Queries to compare
 comparison_queries = {
@@ -46,7 +49,7 @@ comparison_queries = {
 
 
 def query_neo4j(query):
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASS))
+    driver = GraphDatabase.driver(NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD))
     with driver.session() as session:
         result = session.run(query)
         return [record.data() for record in result]
@@ -54,7 +57,7 @@ def query_neo4j(query):
 
 def query_falkor(query):
     client = FalkorDB(host=FALKOR_HOST, port=FALKOR_PORT)
-    graph = client.select_graph(FALKOR_GRAPH)
+    graph = client.select_graph(FALKOR_GRAPH_NAME)
     result = graph.query(query)
     return result.result_set
 

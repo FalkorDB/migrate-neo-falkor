@@ -1,6 +1,6 @@
 import sys
 import os
-
+from dotenv import load_dotenv
 from falkordb import FalkorDB
 from neo4j import GraphDatabase
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -11,10 +11,19 @@ from migrate.create_falkor_graph import main as create_falkor_graph
 from migrate.compare_graphs import main as compare_graphs
 from migrate.clean import main as clean_falkor
 
+load_dotenv()
+FALKOR_HOST = os.getenv("FALKOR_HOST", "localhost")
+FALKOR_PORT = os.getenv("FALKOR_PORT", "6379")
+FALKOR_GRAPH_NAME = os.getenv("FALKOR_GRAPH_NAME", "SocialGraph")
+
+NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
+NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
+NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
+
 
 # Sanity check on the Neo grpah after creation
 def check_neo4j_node_count():
-    driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "test1234"))
+    driver = GraphDatabase.driver(NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD))
     with driver.session() as session:
         count = session.run("MATCH (n) RETURN count(n)").single()[0]
         print(f"Neo4j node count: {count}")
@@ -35,8 +44,8 @@ def check_export_output():
 
 # Sanity check on the falkor grpah after creation
 def check_falkor_graph_created():
-    client = FalkorDB(host="localhost", port=6379)
-    graph = client.select_graph("SocialGraph")
+    client = FalkorDB(host=FALKOR_HOST, port=FALKOR_PORT)
+    graph = client.select_graph(FALKOR_GRAPH_NAME)
     result = graph.query("MATCH (n) RETURN count(n)")
     count = result.result_set[0][0]
     if count < 1:

@@ -1,9 +1,11 @@
+import os
 from neo4j import GraphDatabase
+from dotenv import load_dotenv
 
-# Neo4j connection details
-NEO4J_URI = "bolt://localhost:7687"
-NEO4J_USER = "neo4j"
-NEO4J_PASS = "test1234"
+load_dotenv()
+NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
+NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
+NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
 
 # Path to CSVs relative to Neo4j’s import folder
 CSV_PATH = "file:///sample_data/"
@@ -43,7 +45,7 @@ cypher_commands = [
 
 
 def main():
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASS))
+    driver = GraphDatabase.driver(NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD))
     with driver.session() as session:
         for query in cypher_commands:
             result = session.run(query)

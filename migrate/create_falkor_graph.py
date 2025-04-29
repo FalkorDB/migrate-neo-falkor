@@ -1,12 +1,13 @@
-from falkordb import FalkorDB
 import csv
 import os
+from dotenv import load_dotenv
+from falkordb import FalkorDB
 
-FALKOR_HOST = "localhost"
-FALKOR_PORT = 6379
-FALKOR_GRAPH = "SocialGraph"
-FALKOR_IMPORT_DIR = "file://"
-
+load_dotenv()
+FALKOR_HOST = os.getenv("FALKOR_HOST", "localhost")
+FALKOR_PORT = os.getenv("FALKOR_PORT", "6379")
+FALKOR_IMPORT_DIR = os.getenv("FALKOR_IMPORT_DIR", "file://")
+FALKOR_GRAPH_NAME = os.getenv("FALKOR_GRAPH_NAME", "SocialGraph")
 
 def create_constraints_from_csv(graph):
     constraints_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "neo_data", "constraints.csv"))
@@ -33,7 +34,7 @@ def load_csv_and_create(graph, filename, create_clause, label_desc):
 
 def main():
     client = FalkorDB(host=FALKOR_HOST, port=FALKOR_PORT)
-    graph = client.select_graph("SocialGraph")
+    graph = client.select_graph(FALKOR_GRAPH_NAME)
 
     load_csv_and_create(
         graph,

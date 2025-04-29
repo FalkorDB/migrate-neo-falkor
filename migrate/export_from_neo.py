@@ -1,16 +1,15 @@
-from neo4j import GraphDatabase
 import csv
 import os
 import pandas as pd
 import time
+from dotenv import load_dotenv
+from neo4j import GraphDatabase
 
-PARAMS = {
-    "uri": "bolt://localhost:7687",
-    "user": "neo4j",
-    "password": "test1234"
-}
-
-NEO_EXPORT_FOLDER = "/import/neo_data/"
+load_dotenv()
+NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
+NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
+NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
+NEO_EXPORT_FOLDER = os.getenv("NEO_EXPORT_FOLDER", "/import/neo_data/")
 
 def get_export_path():
     cwd = os.getcwd()
@@ -60,9 +59,9 @@ def convert_firends_with_since_to_epoch(path):
 
 
 def get_neo_credentials():
-    uri = input(f"Enter Neo4j URI (default: {PARAMS['uri']}): ").strip() or PARAMS['uri']
-    user = input(f"Enter Neo4j username (default: {PARAMS['user']}): ").strip() or PARAMS['user']
-    password = input(f"Enter Neo4j password (default: {PARAMS['password']}): ").strip() or PARAMS['password']
+    uri = input(f"Enter Neo4j URI (default: {NEO_URI}): ").strip() or NEO_URI
+    user = input(f"Enter Neo4j username (default: {NEO_CREDS_USERNAME}): ").strip() or NEO_CREDS_USERNAME
+    password = input(f"Enter Neo4j password (default: {NEO_CREDS_PASSWORD}): ").strip() or NEO_CREDS_PASSWORD
     return uri, user, password
 
 
@@ -117,7 +116,6 @@ def main():
             writer.writerow(headers)
             writer.writerows(rows)
         
-
     print(f"[✓] Export complete. Files written to: {export_path}")
 
 
