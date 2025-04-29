@@ -94,7 +94,7 @@ python3 migrate.py
 
 This will:
 - Export the current Neo4j graph to `data/neo_data/`
-- Create a FalkorDB by Creating nodes, relationships, properties, and constraints
+- Create a FalkorDB by Creating nodes, relationships, properties, and constraints (using [LOAD CSV](https://docs.falkordb.com/cypher/load_csv.html))
 - Validate that the graphs are equivalent
 ## 💡 Please Notice 
 
@@ -139,7 +139,7 @@ docker run \
 ```
 
 <details>
-<summary>🐳 Docker Flags Explanation (Neo4j)</summary>
+<summary> Docker Flags Explanation (Neo4j)</summary>
 
 - **`-v "$(pwd)/data":/import`**  
   Mounts the local project's `data/` directory into the Neo4j Docker container under `/import`.  
@@ -195,8 +195,7 @@ python3 migrate.py
 <details>
 <summary>Expand to edit suggestions</summary>
 
-These scripts are tailored to work with the sample data provided in `data/sample_data/` and serve primarily as a **reference implementation**.  
-If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names.
+In orderto support a given ontology, edit the scripts in order to create your node labels, relationship types, property names etc'.
 
 Specifically:
 
