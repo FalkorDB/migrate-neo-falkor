@@ -1,0 +1,3 @@
+id,name,type,entityType,labelsOrTypes,properties,ownedIndex,propertyType
+6,post_title_constraint,UNIQUENESS,NODE,['Post'],['name'],post_title_constraint,
+12,user_name_constraint,UNIQUENESS,NODE,['User'],['name'],user_name_constraint,

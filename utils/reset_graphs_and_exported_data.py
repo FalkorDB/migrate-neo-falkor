@@ -43,5 +43,6 @@ def main():
             if "no such constraint" not in str(e).lower():
                 raise
 
+
 if __name__ == "__main__":
     main()

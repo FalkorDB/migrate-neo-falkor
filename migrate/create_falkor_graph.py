@@ -7,6 +7,7 @@ FALKOR_PORT = 6379
 FALKOR_GRAPH = "SocialGraph"
 IMPORT_DIR = "file://"
 
+
 def create_constraints_from_csv(graph):
     constraints_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "neo_data", "constraints.csv"))
     with open(constraints_path, newline="") as csvfile:
@@ -22,13 +23,11 @@ def create_constraints_from_csv(graph):
                     graph.create_node_unique_constraint(label, prop)
 
 
-
 def load_csv_and_create(graph, filename, create_clause, label_desc):
     result = graph.query(
         f'LOAD CSV WITH HEADERS FROM "{IMPORT_DIR}/{filename}" AS row '
         f'{create_clause}'
     )
-    
     print(f"Created {result.nodes_created} nodes and {int(result.relationships_created)} relationships for {label_desc}")
 
 
@@ -64,7 +63,6 @@ def main():
     )
 
     create_constraints_from_csv(graph)
-
 
 
 if __name__ == "__main__":

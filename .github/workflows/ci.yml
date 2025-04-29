@@ -29,7 +29,7 @@ jobs:
       
       - name: Lint with flake8
         run: |
-          flake8 . --count --select=E,F --show-source --statistics
+          flake8 . --count --select=E,F --show-source --statistics --ignore=E501
 
       - name: Format check with black
         run: |

@@ -19,24 +19,31 @@ comparison_queries = {
     "user_sample": "MATCH (u:User) RETURN u.name, u.age, u.city, u.email ORDER BY u.name",
     "post_sample": "MATCH (p:Post) RETURN p.name, p.likes, p.category, p.image_url ORDER BY p.name",
     "created_rels": {
-        "neo": (
+        "neo": 
+        (
             "MATCH (u:User)-[r:CREATED]->(p:Post) "
             "RETURN elementId(r), datetime(r.timestamp).epochMillis ORDER BY elementId(r)"
-            ),
-        "falkor": ("MATCH (u:User)-[r:CREATED]->(p:Post) "
-            "RETURN r.element_id, r.timestamp ORDER BY r.element_id")
+        ),
+        "falkor": 
+        (
+            "MATCH (u:User)-[r:CREATED]->(p:Post) "
+            "RETURN r.element_id, r.timestamp ORDER BY r.element_id"
+        ),
     },
     "friends_with_rels": {
-        "neo": (
+        "neo": 
+        (
             "MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User) "
             "RETURN elementId(r), datetime({date: r.since}).epochMillis ORDER BY elementId(r)"
-            ),
-        "falkor": (
+        ),
+        "falkor": 
+        (
             "MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User) "
             "RETURN r.element_id, toInteger(r.since) ORDER BY r.element_id"
-            )
+        )
     }
 }
+
 
 def query_neo4j(query):
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASS))
@@ -44,11 +51,13 @@ def query_neo4j(query):
         result = session.run(query)
         return [record.data() for record in result]
 
+
 def query_falkor(query):
     client = FalkorDB(host=FALKOR_HOST, port=FALKOR_PORT)
     graph = client.select_graph(FALKOR_GRAPH)
     result = graph.query(query)
     return result.result_set
+
 
 def compare_results(name, neo_result, falkor_result):
     def normalize_neo(rows):
@@ -79,6 +88,7 @@ def compare_results(name, neo_result, falkor_result):
     emoji = "✅" if match else "❌"
     print(f"{emoji} {name}: {len(neo_norm)} Neo4j vs {len(falkor_norm)} Falkor")
 
+
 def main():
     for name, query in comparison_queries.items():
         print("name:")
@@ -94,5 +104,7 @@ def main():
         falkor_result = query_falkor(falkor_query)
         compare_results(name, neo_result, falkor_result)
 
+
 if __name__ == "__main__":
     main()
+    

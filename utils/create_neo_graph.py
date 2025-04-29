@@ -41,6 +41,7 @@ cypher_commands = [
     "CREATE CONSTRAINT post_title_constraint IF NOT EXISTS FOR (p:Post) REQUIRE p.name IS UNIQUE;"
 ]
 
+
 def main():
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASS))
     with driver.session() as session:
@@ -48,6 +49,7 @@ def main():
             result = session.run(query)
             summary = result.consume()
             print("Created:\n", summary.counters)
+
 
 if __name__ == "__main__":
     main()

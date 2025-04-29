@@ -4,6 +4,12 @@ import os
 import pandas as pd
 import time
 
+PARAMS = {
+    "uri": "bolt://localhost:7687",
+    "user": "neo4j",
+    "password": "test1234"
+}
+
 
 def get_export_path():
     cwd = os.getcwd()
@@ -36,6 +42,7 @@ def convert_created_timestamp_to_epoch(path):
     df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce").astype("int64") // 1_000_000
     df.to_csv(file_path, index=False)
 
+
 def convert_firends_with_since_to_epoch(path):
     file_path = os.path.join(path, "friends_with.csv")
 
@@ -50,11 +57,13 @@ def convert_firends_with_since_to_epoch(path):
     df["since"] = pd.to_datetime(df["since"], errors="coerce").astype("int64") // 1_000_000
     df.to_csv(file_path, index=False)
 
+
 def get_neo_credentials():
-    uri = input("Enter Neo4j URI (default: bolt://localhost:7687): ").strip() or "bolt://localhost:7687"
-    user = input("Enter Neo4j username (default: neo4j): ").strip() or "neo4j"
-    password = input("Enter Neo4j password (default: test1234): ").strip() or "test1234"
+    uri = input(f"Enter Neo4j URI (default: {PARAMS['uri']}): ").strip() or PARAMS['uri']
+    user = input(f"Enter Neo4j username (default: {PARAMS['user']}): ").strip() or PARAMS['user']
+    password = input(f"Enter Neo4j password (default: {PARAMS['password']}): ").strip() or PARAMS['password']
     return uri, user, password
+
 
 def main():
     uri, user, password = get_neo_credentials()
@@ -106,6 +115,7 @@ def main():
         
 
     print(f"[✓] Export complete. Files written to: {export_path}")
+
 
 if __name__ == "__main__":
     main()

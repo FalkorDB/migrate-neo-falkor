@@ -3,12 +3,9 @@ import os
 
 from falkordb import FalkorDB
 from neo4j import GraphDatabase
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from utils.reset_graphs_and_exported_data import main as reset_environment
 from utils.create_neo_graph import main as create_neo_graph
-
 from migrate.export_from_neo import main as export_data_from_neo
 from migrate.create_falkor_graph import main as create_falkor_graph
 from migrate.compare_graphs import main as compare_graphs
@@ -24,6 +21,7 @@ def check_neo4j_node_count():
         if count == 0:
             raise ValueError("Neo4j sanity check failed: no nodes")
     driver.close()
+
 # Sanity check on the Neo data after exporting
 def check_export_output():
     import os
@@ -42,7 +40,6 @@ def check_falkor_graph_created():
     if count < 1:
         raise ValueError("Falkor graph creation check failed: no nodes found.")
     print(f"👍 Falkor graph creation verified: {count} nodes found.")
-
 
 # Helper to confirm continuation
 def confirm_or_exit():
@@ -67,6 +64,7 @@ def run_stage(name, func, check=None):
         reset_environment()
         print("Environment reset. Exiting.")
         sys.exit(1)
+
 
 def main():
     # === RUN MIGRATION STEPS ===
