@@ -193,7 +193,7 @@ python3 migrate.py
 ## ✍️ Editing the Scripts to Your Use Case
 
 <details>
-<summary>Expand to see edit suggestions</summary>
+<summary>Expand to overview edit suggestions</summary>
 
 In orderto support a given ontology, edit the scripts in order to create your node labels, relationship types, property names etc'.
 
@@ -213,29 +213,8 @@ Specifically:
 
 4. **clean.py**
    - This utility script removes internal Neo4j IDs (`<element_id>`) from the exported CSVs. These IDs help create relationships during import but should be removed afterward for a clean schema.
+
 
 </details>
 
 <details>
-<summary>Expand to edit suggestions</summary>
-
-In orderto support a given ontology, edit the scripts in order to create your node labels, relationship types, property names etc'.
-
-Specifically:
-
-1. **export_from_neo.py**
-   - The queries used to export CSVs (saved to `data/neo_data/`) will need to be modified.
-   - Functions like `convert_created_timestamp_to_epoch()` and `convert_friends_with_since_to_epoch()` demonstrate simple examples of transforming `date` and `datetime` values.
-   - For more complex cases, it is recommended to create a separate `transform.py` to handle all transformations and produce cleaned CSVs before importing.
-
-2. **create_falkor_graph.py**
-   - Queries that recreate the graph in FalkorDB must match your graph's structure.
-   - The `create_constraints_from_csv()` function shows an example of applying constraints from CSV; a similar method can be implemented for indexes if needed.
-
-3. **compare_graphs.py**
-   - The `comparison_queries` dictionary and the `compare_results()` function are written based on the sample data and will need editing to properly compare your own data.
-
-4. **clean.py**
-   - This utility script removes internal Neo4j IDs (`<element_id>`) from the exported CSVs. These IDs help create relationships during import but should be removed afterward for a clean schema.
-
-</details>

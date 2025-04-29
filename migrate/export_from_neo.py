@@ -10,6 +10,7 @@ PARAMS = {
     "password": "test1234"
 }
 
+NEO_EXPORT_FOLDER = "/import/neo_data/"
 
 def get_export_path():
     cwd = os.getcwd()
@@ -75,28 +76,31 @@ def main():
         # Nodes
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (u:User) RETURN elementId(u) AS element_id, u.name AS name, u.age AS age, u.city AS city, u.email AS email",
-            "file": "/import/neo_data/users.csv"
+            "file": f"{NEO_EXPORT_FOLDER}users.csv"
         })
-        print(f"[✓] Exported to: /import/neo_data/users.csv")
-
+        result.consume()
+        print(f"[✓] Exported to: {NEO_EXPORT_FOLDER}users.csv")
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (p:Post) RETURN elementId(p) AS element_id, p.name AS name, p.likes AS likes, p.category AS category, p.image_url AS image_url",
-            "file": "/import/neo_data/posts.csv"
+            "file": f"{NEO_EXPORT_FOLDER}posts.csv"
         })
-        print(f"[✓] Exported to: /import/neo_data/posts.csv")
+        result.consume()
+        print(f"[✓] Exported to: {NEO_EXPORT_FOLDER}posts.csv")
 
         # Rels
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User) RETURN elementId(r) AS element_id, elementId(u1) AS start_id, elementId(u2) AS end_id, r.since AS since",
-            "file": "/import/neo_data/friends_with.csv"
+            "file": f"{NEO_EXPORT_FOLDER}friends_with.csv"
         })
-        print(f"[✓] Exported to: /import/neo_data/friends_with.csv")
+        result.consume()
+        print(f"[✓] Exported to: {NEO_EXPORT_FOLDER}friends_with.csv")
 
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (u:User)-[r:CREATED]->(p:Post) RETURN elementId(r) AS element_id, elementId(u) AS start_id, elementId(p) AS end_id, r.timestamp AS timestamp",
-            "file": "/import/neo_data/created.csv"
+            "file": f"{NEO_EXPORT_FOLDER}created.csv"
         })
-        print(f"[✓] Exported to: /import/neo_data/created.csv")
+        result.consume()
+        print(f"[✓] Exported to: {NEO_EXPORT_FOLDER}created.csv")
 
         # Transformations
         convert_created_timestamp_to_epoch(export_path)

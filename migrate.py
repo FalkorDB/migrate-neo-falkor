@@ -19,6 +19,7 @@ def check_export_output():
         raise ValueError(f"Export check failed: missing files {missing}")
     print("Exported files present.")
 
+
 # Sanity check on the Falkor grpah after creation
 def check_falkor_graph_created():
     client = FalkorDB(host="localhost", port=6379)
@@ -37,6 +38,7 @@ def confirm_or_exit():
         print("Aborting pipeline.")
         sys.exit(0)
 
+
 # Run a script stage with optional check, with error handling and environment reset
 def run_stage(name, func, check=None):
     print(f"\n--- Running {name} ---")
@@ -52,6 +54,7 @@ def run_stage(name, func, check=None):
         reset_environment()
         print("Environment reset. Exiting.")
         sys.exit(1)
+
 
 def main():
     # === RUN MIGRATION STEPS ===

@@ -96,8 +96,8 @@ def main():
         neo_query = query
         falkor_query = query
         if name in ['created_rels', 'friends_with_rels']:
-                neo_query = query["neo"]
-                falkor_query = query["falkor"]
+            neo_query = query["neo"]
+            falkor_query = query["falkor"]
         print("querying neo...")
         neo_result = query_neo4j(neo_query)
         print("querying falkor...")
@@ -107,4 +107,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

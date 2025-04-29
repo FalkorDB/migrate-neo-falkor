@@ -22,6 +22,7 @@ def check_neo4j_node_count():
             raise ValueError("Neo4j sanity check failed: no nodes")
     driver.close()
 
+
 # Sanity check on the Neo data after exporting
 def check_export_output():
     import os
@@ -30,6 +31,7 @@ def check_export_output():
     if missing:
         raise ValueError(f"Export check failed: missing files {missing}")
     print("👍 Export output verified: All expected CSV files are present.")
+
 
 # Sanity check on the falkor grpah after creation
 def check_falkor_graph_created():
@@ -41,12 +43,14 @@ def check_falkor_graph_created():
         raise ValueError("Falkor graph creation check failed: no nodes found.")
     print(f"👍 Falkor graph creation verified: {count} nodes found.")
 
+
 # Helper to confirm continuation
 def confirm_or_exit():
     proceed = input("Continue to next stage? either press Enter or [y/N]: ").strip().lower()
     if proceed not in ("", "y", "yes"):
         print("Aborting pipeline.")
         sys.exit(0)
+
 
 # Run a script stage with optional check, with error handling and environment reset
 def run_stage(name, func, check=None):
