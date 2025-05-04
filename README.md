@@ -1,4 +1,4 @@
-[![license](https://img.shields.io/github/license/falkordb/migrate-neo-falkor.svg)](https://github.com/falkordb/migrate-neo-falkor)
+[![license](https://img.shields.io/github/license/falkordb/migrate-neo4j-falkordb.svg)](https://github.com/falkordb/migrate-neo4j-falkordb)
 [![Forum](https://img.shields.io/badge/Forum-falkordb-blue)](https://github.com/orgs/FalkorDB/discussions)
 [![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/ErBEqN9E)
 
@@ -19,14 +19,14 @@ It is designed for local testing but can be extended easily for remote database 
 ```
 migrate.py
 data/
-  neo_data/
+  neo4j_data/
   sample_data/
 migrate/
-  export_from_neo.py
-  create_falkor_graph.py
+  export_from_neo4j.py
+  create_falkordb_graph.py
   compare_graphs.py
 utils/
-  create_neo_graph.py
+  create_neo4j_graph.py
   reset_graphs_and_exported_data.py
   example_run_all.py
 ```
@@ -36,12 +36,12 @@ utils/
 | File/Folder                           | Description                                                                                       |
 |---------------------------------------|---------------------------------------------------------------------------------------------------|
 | `migrate.py`                          | Main migration script to export from Neo4j and import into FalkorDB. Internally runs the scripts located under the `migrate/` folder in sequence.                               |                                        |
-| `data/neo_data/`                      | Exported CSVs from Neo4j, used for importing into FalkorDB                                        |                                        |
-| `migrate/export_from_neo.py`          | Stage I: Export and transform data from Neo4j                                                     |
-| `migrate/create_falkor_graph.py`      | Stage II: Create FalkorDB graph from exported Neo4j data                                          |
+| `data/neo4j_data/`                      | Exported CSVs from Neo4j, used for importing into FalkorDB                                        |                                        |
+| `migrate/export_from_neo4j.py`          | Stage I: Export and transform data from Neo4j                                                     |
+| `migrate/create_falkordb_graph.py`      | Stage II: Create FalkorDB graph from exported Neo4j data                                          |
 | `migrate/compare_graphs.py`           | Stage III: Compare Neo4j and FalkorDB graphs to verify equality                                   |
 | `data/sample_data/`                   | Optional: Source CSVs to create a sample Neo4j graph      
-| `utils/create_neo_graph.py`           | Optional: Create Neo4j graph from sample data                                                               |
+| `utils/create_neo4j_graph.py`           | Optional: Create Neo4j graph from sample data                                                               |
 | `utils/reset_graphs_and_exported_data.py` | Optional: Reset both graphs and clear exported data                                                         |
 | `utils/example_run_all.py`            | Optional: Run all steps, resetting environment and creating Neo4j graph from sample data          |
 
@@ -53,12 +53,12 @@ Below are visualizations of the graph before and after the migration:
 
 <p align="center">
   <b>Neo4j original graph</b><br>
-  <img src="images/neo_graph.png" alt="Neo4j original graph" width="400"/>
+  <img src="images/neo4j_graph.png" alt="Neo4j original graph" width="400"/>
 </p>
 
 <p align="center">
   <b>FalkorDB graph after migration</b><br>
-  <img src="images/falkor_graph.png" alt="FalkorDB graph after migrating" width="400"/>
+  <img src="images/falkordb_graph.png" alt="FalkorDB graph after migrating" width="400"/>
 </p>
 
 ---
@@ -71,17 +71,17 @@ Below are visualizations of the graph before and after the migration:
 
 ---
 
-### 🐳 Docker Setup For running Falkor Locally
+### 🐳 Docker Setup For running FalkorDB Locally
 
 ```bash
 docker run --name my-local-falkor \
   -p 6379:6379 \
   -p 3000:3000 \
-  -v "$(pwd)/data/neo_data":/var/lib/FalkorDB/import \
+  -v "$(pwd)/data/neo4j_data":/var/lib/FalkorDB/import \
   -it --rm falkordb/falkordb:latest
 ```
-- Using `-v "$(pwd)/data/neo_data":/var/lib/FalkorDB/import`  
-  Mounts the local `data/neo_data` directory *into* FalkorDB's container under `/var/lib/FalkorDB/import`,  
+- Using `-v "$(pwd)/data/neo4j_data":/var/lib/FalkorDB/import`  
+  Mounts the local `data/neo4j_data` directory *into* FalkorDB's container under `/var/lib/FalkorDB/import`,  
   allowing FalkorDB running inside Docker to access and load the exported CSV files from the local project.
 
 ---
@@ -99,7 +99,7 @@ python3 migrate.py
 3. Follow the prompts to approve each stage of the migration.
 
 This will:
-- Export the current Neo4j graph to `data/neo_data/`
+- Export the current Neo4j graph to `data/neo4j_data/`
 - Create a FalkorDB by Creating nodes, relationships, properties, and constraints (using [LOAD CSV](https://docs.falkordb.com/cypher/load_csv.html))
 - Validate that the graphs are equivalent
 ## 💡 Please Notice 
@@ -112,7 +112,7 @@ If you wish to use them with your own Neo4j graph, you will need to **adapt the 
 ## ⏳ Transformations
 
 FalkorDB **does not** support Neo4j's [temporal types](https://neo4j.com/docs/cypher-manual/current/values-and-types/temporal/) such as `date`, `datetime`, `localdatetime`, etc.  
-Instead, Falkor expects **timestamps as numbers** — typically **UNIX time** in **microseconds** (or sometimes milliseconds).
+Instead, FalkorDB expects **timestamps as numbers** — typically **UNIX time** in **microseconds** (or sometimes milliseconds).
 
 In this project:
 - All Neo4j `date` and `datetime` fields are **converted to UNIX epoch time** (in microseconds) before being imported into FalkorDB.
@@ -126,7 +126,7 @@ you should extend the transformation logic accordingly before loading into Falko
 ## 🧪 Optional — If you <strong>don't have</strong> a Neo4j graph yet:
 
 <details>
-<summary>Expand to create local neo graph:</summary>
+<summary>Expand to create local Neo4j graph:</summary>
 
 ### 🐳 Docker Setup For running Neo4j Locally
 
@@ -187,7 +187,7 @@ OR
 2. Running compleley manually
 ```bash
 python3 utils/reset_graphs_and_exported_data.py
-python3 utils/create_neo_graph.py
+python3 utils/create_neo4j_graph.py
 python3 migrate.py
 ``` 
 
@@ -205,12 +205,12 @@ In orderto support a given ontology, edit the scripts in order to create your no
 
 Specifically:
 
-1. **export_from_neo.py**
-   - The queries used to export CSVs (saved to `data/neo_data/`) will need to be modified.
+1. **export_from_neo4j.py**
+   - The queries used to export CSVs (saved to `data/neo4j_data/`) will need to be modified.
    - Functions like `convert_created_timestamp_to_epoch()` and `convert_friends_with_since_to_epoch()` demonstrate simple examples of transforming `date` and `datetime` values.
    - For more complex cases, it is recommended to create a separate `transform.py` to handle all transformations and produce cleaned CSVs before importing.
 
-2. **create_falkor_graph.py**
+2. **create_falkordb_graph.py**
    - Queries that recreate the graph in FalkorDB must match your graph's structure.
    - The `create_constraints_from_csv()` function shows an example of applying constraints from CSV; a similar method can be implemented for indexes if needed.
 

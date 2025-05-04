@@ -5,26 +5,25 @@ from neo4j import GraphDatabase
 from falkordb import FalkorDB
 
 load_dotenv()
-NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
-NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
-NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
-FALKOR_HOST = os.getenv("FALKOR_HOST", "localhost")
-FALKOR_PORT = os.getenv("FALKOR_PORT", "6379")
+NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_CREDS_USERNAME = os.getenv("NEO4J_CREDS_USERNAME", "neo4j")
+NEO4J_CREDS_PASSWORD = os.getenv("NEO4J_CREDS_PASSWORD", "test1234")
+NEO4J_DATA_FOLDER = os.getenv("NEO4J_DATA_FOLDER", "data/neo4j_data/")
+FALKOR_DB_HOST = os.getenv("FALKOR_DB_HOST", "localhost")
+FALKOR_DB_PORT = os.getenv("FALKOR_DB_PORT", "6379")
+FALKOR_DB_GRAPH_NAME = os.getenv("FALKOR_DB_GRAPH_NAME", "SocialGraph")
 
 
 def main():
-    # === 1. Clear neo_data/ folder ===
-    neo_data_dir = "data/neo_data"
-    csv_files = glob.glob(os.path.join(neo_data_dir, "*.csv"))
-    print(f"Found {len(csv_files)} CSV files in '{neo_data_dir}' to delete.")
+    # === 1. Clear neo4j_data/ folder ===
+    csv_files = glob.glob(os.path.join(NEO4J_DATA_FOLDER, "*.csv"))
+    print(f"Found {len(csv_files)} CSV files in '{NEO4J_DATA_FOLDER}' to delete.")
     for file in csv_files:
         print(f"Deleting file: {file}")
         os.remove(file)
 
     # === 2. Reset Neo4j graph ===
-    neo4j_driver = GraphDatabase.driver(
-        NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD)
-    )
+    neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD))
     with neo4j_driver.session() as session:
         print("Deleting all nodes and relationships from Neo4j...")
         session.run("MATCH (n) DETACH DELETE n")
@@ -37,8 +36,8 @@ def main():
     neo4j_driver.close()
 
     # === 3. Reset Falkor graph ===
-    falkor_client = FalkorDB(host=FALKOR_HOST, port=FALKOR_PORT)
-    graph = falkor_client.select_graph("SocialGraph")
+    falkordb_client = FalkorDB(host=FALKOR_DB_HOST, port=FALKOR_DB_PORT)
+    graph = falkordb_client.select_graph(FALKOR_DB_GRAPH_NAME)
 
     print("Deleting all nodes and relationships from FalkorDB...")
     graph.query("MATCH (n) DETACH DELETE n")

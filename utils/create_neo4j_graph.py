@@ -3,9 +3,9 @@ from neo4j import GraphDatabase
 from dotenv import load_dotenv
 
 load_dotenv()
-NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
-NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
-NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
+NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_CREDS_USERNAME = os.getenv("NEO4J_CREDS_USERNAME", "neo4j")
+NEO4J_CREDS_PASSWORD = os.getenv("NEO4J_CREDS_PASSWORD", "test1234")
 
 # Path to CSVs relative to Neo4j’s import folder
 CSV_PATH = "file:///sample_data/"
@@ -40,14 +40,12 @@ cypher_commands = [
     CREATE (u)-[:CREATED {{timestamp: datetime(row.timestamp)}}]->(p);
     """,
     "CREATE CONSTRAINT user_name_constraint IF NOT EXISTS FOR (u:User) REQUIRE u.name IS UNIQUE;",
-    "CREATE CONSTRAINT post_title_constraint IF NOT EXISTS FOR (p:Post) REQUIRE p.name IS UNIQUE;",
+    "CREATE CONSTRAINT post_title_constraint IF NOT EXISTS FOR (p:Post) REQUIRE p.name IS UNIQUE;"
 ]
 
 
 def main():
-    driver = GraphDatabase.driver(
-        NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD)
-    )
+    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD))
     with driver.session() as session:
         for query in cypher_commands:
             result = session.run(query)
