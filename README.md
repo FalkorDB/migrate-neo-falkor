@@ -1,4 +1,10 @@
+[![license](https://img.shields.io/github/license/falkordb/migrate-neo-falkor.svg)](https://github.com/falkordb/migrate-neo-falkor)
+[![Forum](https://img.shields.io/badge/Forum-falkordb-blue)](https://github.com/orgs/FalkorDB/discussions)
+[![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/ErBEqN9E)
+
 # 🚀 Migrate from Neo4j to FalkorDB
+
+[![Try Free](https://img.shields.io/badge/Try%20Free-FalkorDB%20Cloud-FF8101?labelColor=FDE900&style=for-the-badge&link=https://app.falkordb.cloud)](https://app.falkordb.cloud)
 
 This project provides a complete example of **migrating an existing Neo4j graph to FalkorDB**.  
 It demonstrates how to **export data from Neo4j**, **import it into FalkorDB**, and **preserve nodes, relationships, properties and constraints**.  
