@@ -12,7 +12,11 @@ FALKOR_DB_DATA_FOLDER = os.getenv("FALKOR_DB_DATA_FOLDER", "import/neo4j_data/")
 
 
 def create_constraints_from_csv(graph):
-    constraints_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", FALKOR_DB_DATA_FOLDER, "constraints.csv"))
+    constraints_path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), "..", FALKOR_DB_DATA_FOLDER, "constraints.csv"
+        )
+    )
     with open(constraints_path, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -29,9 +33,11 @@ def create_constraints_from_csv(graph):
 def load_csv_and_create(graph, filename, create_clause, label_desc):
     result = graph.query(
         f'LOAD CSV WITH HEADERS FROM "{FALKOR_DB_IMPORT_DIR}/{filename}" AS row '
-        f'{create_clause}'
+        f"{create_clause}"
     )
-    print(f"Created {result.nodes_created} nodes and {int(result.relationships_created)} relationships for {label_desc}")
+    print(
+        f"Created {result.nodes_created} nodes and {int(result.relationships_created)} relationships for {label_desc}"
+    )
 
 
 def main():
@@ -41,28 +47,28 @@ def main():
     load_csv_and_create(
         graph,
         "users.csv",
-        'CREATE (:User {element_id: row.element_id, name: row.name, age: toInteger(row.age), city: row.city, email: row.email})',
-        "Users"
+        "CREATE (:User {element_id: row.element_id, name: row.name, age: toInteger(row.age), city: row.city, email: row.email})",
+        "Users",
     )
     load_csv_and_create(
         graph,
         "posts.csv",
-        'CREATE (:Post {element_id: row.element_id, name: row.name, likes: toInteger(row.likes), category: row.category, image_url: row.image_url})',
-        "Posts"
+        "CREATE (:Post {element_id: row.element_id, name: row.name, likes: toInteger(row.likes), category: row.category, image_url: row.image_url})",
+        "Posts",
     )
     load_csv_and_create(
         graph,
         "friends_with.csv",
-        'MATCH (u1:User {element_id: row.start_id}), (u2:User {element_id: row.end_id}) '
-        'CREATE (u1)-[:FRIENDS_WITH {since: row.since, element_id: row.element_id}]->(u2)',
-        "FRIENDS_WITH relationships"
+        "MATCH (u1:User {element_id: row.start_id}), (u2:User {element_id: row.end_id}) "
+        "CREATE (u1)-[:FRIENDS_WITH {since: row.since, element_id: row.element_id}]->(u2)",
+        "FRIENDS_WITH relationships",
     )
     load_csv_and_create(
         graph,
         "created.csv",
-        'MATCH (u:User {element_id: row.start_id}), (p:Post {element_id: row.end_id}) '
-        'CREATE (u)-[:CREATED {timestamp: toInteger(row.timestamp), element_id: row.element_id}]->(p)',
-        "CREATED relationships"
+        "MATCH (u:User {element_id: row.start_id}), (p:Post {element_id: row.end_id}) "
+        "CREATE (u)-[:CREATED {timestamp: toInteger(row.timestamp), element_id: row.element_id}]->(p)",
+        "CREATED relationships",
     )
 
     create_constraints_from_csv(graph)

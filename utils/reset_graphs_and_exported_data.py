@@ -23,7 +23,9 @@ def main():
         os.remove(file)
 
     # === 2. Reset Neo4j graph ===
-    neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD))
+    neo4j_driver = GraphDatabase.driver(
+        NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD)
+    )
     with neo4j_driver.session() as session:
         print("Deleting all nodes and relationships from Neo4j...")
         session.run("MATCH (n) DETACH DELETE n")

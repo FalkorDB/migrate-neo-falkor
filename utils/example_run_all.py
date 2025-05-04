@@ -17,7 +17,9 @@ NEO4J_DATA_FOLDER = os.getenv("NEO4J_DATA_FOLDER", "data/neo4j_data")
 
 # Sanity check on the Neo grpah after creation
 def check_neo4j_node_count():
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD))
+    driver = GraphDatabase.driver(
+        NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD)
+    )
     with driver.session() as session:
         count = session.run("MATCH (n) RETURN count(n)").single()[0]
         print(f"Neo4j node count: {count}")
@@ -29,8 +31,17 @@ def check_neo4j_node_count():
 # Sanity check on the Neo data after exporting
 def check_export_output():
     import os
-    expected_files = ["users.csv", "posts.csv", "friends_with.csv", "created.csv", "constraints.csv"]
-    missing = [f for f in expected_files if not os.path.exists(f"{NEO4J_DATA_FOLDER}/{f}")]
+
+    expected_files = [
+        "users.csv",
+        "posts.csv",
+        "friends_with.csv",
+        "created.csv",
+        "constraints.csv",
+    ]
+    missing = [
+        f for f in expected_files if not os.path.exists(f"{NEO4J_DATA_FOLDER}/{f}")
+    ]
     if missing:
         raise ValueError(f"Export check failed: missing files {missing}")
     print("👍 Export output verified: All expected CSV files are present.")
@@ -81,9 +92,12 @@ def main():
         "Stage - Reset Environment": (reset_environment, None),
         "Stage - Create Neo4j Graph": (create_neo4j_graph, check_neo4j_node_count),
         "Stage - Export from Neo4j": (export_data_from_neo4j, check_export_output),
-        "Stage - Create Falkordb Graph": (create_falkordb_graph, check_falkordb_graph_created),
+        "Stage - Create Falkordb Graph": (
+            create_falkordb_graph,
+            check_falkordb_graph_created,
+        ),
         "Stage - Compare Graphs": (compare_graphs, None),
-        "Stage - Clean Falkordb Graph": (clean_falkordb, None)
+        "Stage - Clean Falkordb Graph": (clean_falkordb, None),
     }
 
     proceed = (

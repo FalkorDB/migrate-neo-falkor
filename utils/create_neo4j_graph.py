@@ -40,12 +40,14 @@ cypher_commands = [
     CREATE (u)-[:CREATED {{timestamp: datetime(row.timestamp)}}]->(p);
     """,
     "CREATE CONSTRAINT user_name_constraint IF NOT EXISTS FOR (u:User) REQUIRE u.name IS UNIQUE;",
-    "CREATE CONSTRAINT post_title_constraint IF NOT EXISTS FOR (p:Post) REQUIRE p.name IS UNIQUE;"
+    "CREATE CONSTRAINT post_title_constraint IF NOT EXISTS FOR (p:Post) REQUIRE p.name IS UNIQUE;",
 ]
 
 
 def main():
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD))
+    driver = GraphDatabase.driver(
+        NEO4J_URI, auth=(NEO4J_CREDS_USERNAME, NEO4J_CREDS_PASSWORD)
+    )
     with driver.session() as session:
         for query in cypher_commands:
             result = session.run(query)
