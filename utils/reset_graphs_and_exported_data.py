@@ -8,6 +8,9 @@ load_dotenv()
 NEO_URI = os.getenv("NEO_URI", "bolt://localhost:7687")
 NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
 NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
+FALKOR_HOST = os.getenv("FALKOR_HOST", "localhost")
+FALKOR_PORT = os.getenv("FALKOR_PORT", "6379")
+
 
 def main():
     # === 1. Clear neo_data/ folder ===
@@ -32,7 +35,7 @@ def main():
     neo4j_driver.close()
 
     # === 3. Reset Falkor graph ===
-    falkor_client = FalkorDB(host="localhost", port=6379)
+    falkor_client = FalkorDB(host=FALKOR_HOST, port=FALKOR_PORT)
     graph = falkor_client.select_graph("SocialGraph")
 
     print("Deleting all nodes and relationships from FalkorDB...")
