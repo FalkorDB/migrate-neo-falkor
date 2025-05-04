@@ -21,34 +21,32 @@ comparison_queries = {
     "user_sample": "MATCH (u:User) RETURN u.name, u.age, u.city, u.email ORDER BY u.name",
     "post_sample": "MATCH (p:Post) RETURN p.name, p.likes, p.category, p.image_url ORDER BY p.name",
     "created_rels": {
-        "neo": 
-        (
+        "neo": (
             "MATCH (u:User)-[r:CREATED]->(p:Post) "
             "RETURN elementId(r), datetime(r.timestamp).epochMillis ORDER BY elementId(r)"
         ),
-        "falkor": 
-        (
+        "falkor": (
             "MATCH (u:User)-[r:CREATED]->(p:Post) "
             "RETURN r.element_id, r.timestamp ORDER BY r.element_id"
         ),
     },
     "friends_with_rels": {
-        "neo": 
-        (
+        "neo": (
             "MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User) "
             "RETURN elementId(r), datetime({date: r.since}).epochMillis ORDER BY elementId(r)"
         ),
-        "falkor": 
-        (
+        "falkor": (
             "MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User) "
             "RETURN r.element_id, toInteger(r.since) ORDER BY r.element_id"
-        )
-    }
+        ),
+    },
 }
 
 
 def query_neo4j(query):
-    driver = GraphDatabase.driver(NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD))
+    driver = GraphDatabase.driver(
+        NEO_URI, auth=(NEO_CREDS_USERNAME, NEO_CREDS_PASSWORD)
+    )
     with driver.session() as session:
         result = session.run(query)
         return [record.data() for record in result]
@@ -69,7 +67,9 @@ def compare_results(name, neo_result, falkor_result):
             for i, v in enumerate(values):
                 if isinstance(v, pd.Timestamp) or isinstance(v, str) and "T" in v:
                     try:
-                        values[i] = int(pd.to_datetime(v, errors="coerce").timestamp() * 1_000_000)
+                        values[i] = int(
+                            pd.to_datetime(v, errors="coerce").timestamp() * 1_000_000
+                        )
                     except Exception:
                         pass
                 elif pd.isna(v):
@@ -97,7 +97,7 @@ def main():
         print(name)
         neo_query = query
         falkor_query = query
-        if name in ['created_rels', 'friends_with_rels']:
+        if name in ["created_rels", "friends_with_rels"]:
             neo_query = query["neo"]
             falkor_query = query["falkor"]
         print("querying neo...")
