@@ -9,8 +9,9 @@ load_dotenv()
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_CREDS_USERNAME = os.getenv("NEO4J_CREDS_USERNAME", "neo4j")
 NEO4J_CREDS_PASSWORD = os.getenv("NEO4J_CREDS_PASSWORD", "test1234")
-NEO4j_MOUNTED_DIR = os.getenv("NEO4j_MOUNTED_DIR", "/import/neo4j_data")
+NEO4J_MOUNTED_DIR = os.getenv("NEO4J_MOUNTED_DIR", "/import/neo4j_data")
 NEO4J_DATA_FOLDER = os.getenv("NEO4J_DATA_FOLDER", "data/neo4j_data")
+
 
 def get_export_path():
     cwd = os.getcwd()
@@ -76,13 +77,13 @@ def main():
         # Nodes
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (u:User) RETURN elementId(u) AS element_id, u.name AS name, u.age AS age, u.city AS city, u.email AS email",
-            "file": f"{NEO4j_MOUNTED_DIR}/users.csv"
+            "file": f"{NEO4J_MOUNTED_DIR}/users.csv"
         })
         result.consume()
         print(f"[✓] Exported to: {NEO4J_DATA_FOLDER}/users.csv")
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (p:Post) RETURN elementId(p) AS element_id, p.name AS name, p.likes AS likes, p.category AS category, p.image_url AS image_url",
-            "file": f"{NEO4j_MOUNTED_DIR}/posts.csv"
+            "file": f"{NEO4J_MOUNTED_DIR}/posts.csv"
         })
         result.consume()
         print(f"[✓] Exported to: {NEO4J_DATA_FOLDER}/posts.csv")
@@ -90,14 +91,14 @@ def main():
         # Rels
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User) RETURN elementId(r) AS element_id, elementId(u1) AS start_id, elementId(u2) AS end_id, r.since AS since",
-            "file": f"{NEO4j_MOUNTED_DIR}/friends_with.csv"
+            "file": f"{NEO4J_MOUNTED_DIR}/friends_with.csv"
         })
         result.consume()
         print(f"[✓] Exported to: {NEO4J_DATA_FOLDER}/friends_with.csv")
 
         result = session.run("CALL apoc.export.csv.query($query, $file, {})", {
             "query": "MATCH (u:User)-[r:CREATED]->(p:Post) RETURN elementId(r) AS element_id, elementId(u) AS start_id, elementId(p) AS end_id, r.timestamp AS timestamp",
-            "file": f"{NEO4j_MOUNTED_DIR}/created.csv"
+            "file": f"{NEO4J_MOUNTED_DIR}/created.csv"
         })
         result.consume()
         print(f"[✓] Exported to: {NEO4J_DATA_FOLDER}/created.csv")
