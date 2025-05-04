@@ -214,7 +214,7 @@ Specifically:
 
 ## LICENSE
 
-Licensed under the Server Side Public License v1 (SSPLv1). See [LICENSE](LICENSE.txt).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ### Support our work
 
