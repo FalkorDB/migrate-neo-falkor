@@ -1,20 +1,21 @@
+
+![Easily migrate to FalkorDB from Neo4j](https://github.com/user-attachments/assets/042c6f8c-05fd-4a81-b1c3-1b0426854aa5)
+
 [![license](https://img.shields.io/github/license/falkordb/migrate-neo4j-falkordb.svg)](https://github.com/falkordb/migrate-neo4j-falkordb)
 [![Forum](https://img.shields.io/badge/Forum-falkordb-blue)](https://github.com/orgs/FalkorDB/discussions)
 [![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/ErBEqN9E)
 
-# 🚀 Migrate from Neo4j to FalkorDB
+# Migrate from Neo4j to FalkorDB
+This repository demonstrates how to **migrate a graph from Neo4j to FalkorDB**.  
+It provides scripts to **export from Neo4j**, **transform the data**, **import it into FalkorDB**, and **verify data integrity**. All node labels, relationships, properties, and constraints are preserved.
+
+The workflow is designed for local environments and can be extended to support production systems or cloud deployments.
 
 [![Try Free](https://img.shields.io/badge/Try%20Free-FalkorDB%20Cloud-FF8101?labelColor=FDE900&style=for-the-badge&link=https://app.falkordb.cloud)](https://app.falkordb.cloud)
 
-This project provides a complete example of **migrating an existing Neo4j graph to FalkorDB**.  
-It demonstrates how to **export data from Neo4j**, **import it into FalkorDB**, and **preserve nodes, relationships, properties and constraints**.  
-
-It is designed for local testing but can be extended easily for remote database migrations.
-
 ---
 
-
-## 📂 Project Structure
+##  📂 Project Structure
 
 ```
 migrate.py
@@ -31,47 +32,34 @@ utils/
   example_run_all.py
 ```
 
-**Explanation of files and folders:**
 
 | File/Folder                           | Description                                                                                       |
-|---------------------------------------|---------------------------------------------------------------------------------------------------|
-| `migrate.py`                          | Main migration script to export from Neo4j and import into FalkorDB. Internally runs the scripts located under the `migrate/` folder in sequence.                               |                                        |
-| `data/neo4j_data/`                      | Exported CSVs from Neo4j, used for importing into FalkorDB                                        |                                        |
-| `migrate/export_from_neo4j.py`          | Stage I: Export and transform data from Neo4j                                                     |
-| `migrate/create_falkordb_graph.py`      | Stage II: Create FalkorDB graph from exported Neo4j data                                          |
-| `migrate/compare_graphs.py`           | Stage III: Compare Neo4j and FalkorDB graphs to verify equality                                   |
-| `data/sample_data/`                   | Optional: Source CSVs to create a sample Neo4j graph      
-| `utils/create_neo4j_graph.py`           | Optional: Create Neo4j graph from sample data                                                               |
-| `utils/reset_graphs_and_exported_data.py` | Optional: Reset both graphs and clear exported data                                                         |
-| `utils/example_run_all.py`            | Optional: Run all steps, resetting environment and creating Neo4j graph from sample data          |
-
----
-##  🔎 Migration Results - Visualised
+|--------------------------------------|---------------------------------------------------------------------------------------------------|
+| `migrate.py`                         | Orchestrates the full migration pipeline: export → import → compare                              |
+| `data/neo4j_data/`                   | Directory for CSV files exported from Neo4j                                                       |
+| `migrate/export_from_neo4j.py`      | Stage I: Exports and transforms data from Neo4j                                                   |
+| `migrate/create_falkordb_graph.py`  | Stage II: Builds the FalkorDB graph from exported Neo4j data                                      |
+| `migrate/compare_graphs.py`         | Stage III: Compares Neo4j and FalkorDB graphs to confirm parity                                   |
+| `data/sample_data/`                 | Optional: Sample CSVs used to generate a Neo4j test graph                                          |
+| `utils/create_neo4j_graph.py`       | Optional: Creates a Neo4j graph using the provided sample data                                     |
+| `utils/reset_graphs_and_exported_data.py` | Optional: Clears both graphs and removes exported data                                             |
+| `utils/example_run_all.py`          | Optional: Runs all stages end-to-end, including reset and sample graph creation                   |
 
 
-Below are visualizations of the graph before and after the migration:
 
-<p align="center">
-  <b>Neo4j original graph</b><br>
-  <img src="images/neo4j_graph.png" alt="Neo4j original graph" width="400"/>
-</p>
+##  Graph Comparison: Before and After Migration
+| Neo4j (Source)                                                             | FalkorDB (Target)                                                                       |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| <img src="images/neo4j_graph.png" alt="Neo4j original graph" width="100%"/> | <img src="images/falkordb_graph.png" alt="FalkorDB graph after migrating" width="100%"/> |
 
-<p align="center">
-  <b>FalkorDB graph after migration</b><br>
-  <img src="images/falkordb_graph.png" alt="FalkorDB graph after migrating" width="400"/>
-</p>
 
----
+## Setup
 
-## ⚙️ Setup
+### Prerequisites
+- Neo4j and FalkorDB must be running locally using Docker
+- Your Neo4j instance should already contain data
 
-### ⚠️ Assumptions
-- Both **Neo4j** and **FalkorDB** are running locally using **Docker**.
-- **Neo4j** is already populated with data.
-
----
-
-### 🐳 Docker Setup For running FalkorDB Locally
+### Docker Setup For running FalkorDB Locally
 
 ```bash
 docker run --name my-local-falkor \
@@ -80,17 +68,17 @@ docker run --name my-local-falkor \
   -v "$(pwd)/data/neo4j_data":/var/lib/FalkorDB/import \
   -it --rm falkordb/falkordb:latest
 ```
-- Using `-v "$(pwd)/data/neo4j_data":/var/lib/FalkorDB/import`  
-  Mounts the local `data/neo4j_data` directory *into* FalkorDB's container under `/var/lib/FalkorDB/import`,  
-  allowing FalkorDB running inside Docker to access and load the exported CSV files from the local project.
+Use `-v "$(pwd)/data/neo4j_data":/var/lib/FalkorDB/import` which mounts the local `data/neo4j_data` folder into the FalkorDB container, allowing access to the exported CSVs during import.
 
 ---
 
-## ⭐ Migration Flow
-1. Install Requirements:
+## Migration Flow
+
+1. Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
 2. Run the main migration script from the root of the project:
 ```bash
 python3 migrate.py
@@ -100,16 +88,17 @@ python3 migrate.py
 
 This will:
 - Export the current Neo4j graph to `data/neo4j_data/`
-- Create a FalkorDB by Creating nodes, relationships, properties, and constraints (using [LOAD CSV](https://docs.falkordb.com/cypher/load_csv.html))
+- Create a FalkorDB by creating nodes, relationships, properties, and constraints (using [LOAD CSV](https://docs.falkordb.com/cypher/load_csv.html))
 - Validate that the graphs are equivalent
-## 💡 Please Notice 
+  
+## Adapting to your Use Case 
 
 These scripts are tailored to work with the sample data provided in `data/sample_data/` and serve primarily as a **reference implementation**.  
 If you wish to use them with your own Neo4j graph, you will need to **adapt the scripts in the `migrate/` folder** to fit your graph's ontology, such as node labels, relationship types, and property names. See [Editing the Scripts](#-editing-the-scripts-to-your-use-case) 
 
 ---
 
-## ⏳ Transformations
+## Handling Temporal Data
 
 FalkorDB **does not** support Neo4j's [temporal types](https://neo4j.com/docs/cypher-manual/current/values-and-types/temporal/) such as `date`, `datetime`, `localdatetime`, etc.  
 Instead, FalkorDB expects **timestamps as numbers** — typically **UNIX time** in **microseconds** (or sometimes milliseconds).
@@ -123,7 +112,7 @@ you should extend the transformation logic accordingly before loading into Falko
 
 ---
 
-## 🧪 Optional — If you <strong>don't have</strong> a Neo4j graph yet:
+## Optional: No Existing Neo4j Graph?
 
 <details>
 <summary>Expand to create local Neo4j graph:</summary>
@@ -222,3 +211,13 @@ Specifically:
 
 
 </details>
+
+## LICENSE
+
+Licensed under the Server Side Public License v1 (SSPLv1). See [LICENSE](LICENSE.txt).
+
+### Support our work
+
+⭐️ If you find this repository helpful, please consider giving it a star!
+
+↗️ Graph, graph database, RAG, graphrag, Retrieval-Augmented Generation,Information Retrieval, Natural Language Processing, LLM, Embeddings, Semantic Search
