@@ -14,7 +14,6 @@ NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
 NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
 
 
-
 # Queries to compare
 comparison_queries = {
     "node_count": "MATCH (n) RETURN count(n) AS count",

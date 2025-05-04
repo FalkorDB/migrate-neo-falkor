@@ -9,6 +9,7 @@ FALKOR_PORT = os.getenv("FALKOR_PORT", "6379")
 FALKOR_IMPORT_DIR = os.getenv("FALKOR_IMPORT_DIR", "file://")
 FALKOR_GRAPH_NAME = os.getenv("FALKOR_GRAPH_NAME", "SocialGraph")
 
+
 def create_constraints_from_csv(graph):
     constraints_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "neo_data", "constraints.csv"))
     with open(constraints_path, newline="") as csvfile:

@@ -11,6 +11,7 @@ NEO_CREDS_USERNAME = os.getenv("NEO_CREDS_USERNAME", "neo4j")
 NEO_CREDS_PASSWORD = os.getenv("NEO_CREDS_PASSWORD", "test1234")
 NEO_EXPORT_FOLDER = os.getenv("NEO_EXPORT_FOLDER", "/import/neo_data/")
 
+
 def get_export_path():
     cwd = os.getcwd()
     default_path = os.path.join(cwd, "data", "neo_data")

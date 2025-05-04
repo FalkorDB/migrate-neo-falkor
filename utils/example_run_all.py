@@ -3,13 +3,6 @@ import os
 from dotenv import load_dotenv
 from falkordb import FalkorDB
 from neo4j import GraphDatabase
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from utils.reset_graphs_and_exported_data import main as reset_environment
-from utils.create_neo_graph import main as create_neo_graph
-from migrate.export_from_neo import main as export_data_from_neo
-from migrate.create_falkor_graph import main as create_falkor_graph
-from migrate.compare_graphs import main as compare_graphs
-from migrate.clean import main as clean_falkor
 
 load_dotenv()
 FALKOR_HOST = os.getenv("FALKOR_HOST", "localhost")
@@ -102,4 +95,12 @@ def main():
 
 
 if __name__ == "__main__":
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    from utils.reset_graphs_and_exported_data import main as reset_environment
+    from utils.create_neo_graph import main as create_neo_graph
+    from migrate.export_from_neo import main as export_data_from_neo
+    from migrate.create_falkor_graph import main as create_falkor_graph
+    from migrate.compare_graphs import main as compare_graphs
+    from migrate.clean import main as clean_falkor
+
     main()
